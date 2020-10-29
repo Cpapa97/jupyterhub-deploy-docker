@@ -52,6 +52,12 @@ c.JupyterHub.port = 443
 c.JupyterHub.ssl_key = os.environ['SSL_KEY']
 c.JupyterHub.ssl_cert = os.environ['SSL_CERT']
 
+# Added port management (attempt to fix)
+#c.JupyterHub.allow_origin = '*' #allow all origins
+#c.JupyterHub.ip = '0.0.0.0' # listen on all IPs
+c.JupyterHub.ip = '*'
+c.JupyterHub.allow_remote_access = True
+
 # Authenticate users with GitHub OAuth
 c.JupyterHub.authenticator_class = 'oauthenticator.GitHubOAuthenticator'
 c.GitHubOAuthenticator.oauth_callback_url = os.environ['OAUTH_CALLBACK_URL']
