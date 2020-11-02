@@ -1,6 +1,56 @@
 ARG DOCKER_NOTEBOOK_IMAGE
+
+# Initial image pull (need to figure out how to get more out the output synced from this to avoid copying it all down below and possibly getting desynced)
+FROM at-docker.ad.bcm.edu:5000/minnie65p3-cpapa97:latest as builder
+
 FROM $DOCKER_NOTEBOOK_IMAGE
 ARG JUPYTERHUB_VERSION
-#RUN python3 -m pip install --no-cache jupyterhub==$JUPYTERHUB_VERSION
-#RUN pip install datajoint matplotlib 
-WORKDIR /content/notebooks
+
+# deal with permission issues temporarily, (supposedly) reset down below
+USER root
+
+# Install dependency apt packages
+RUN apt-get update && \
+    apt-get -y install graphviz libxml2 libxml2-dev zlib1g-dev build-essential python-dev \
+    python-igraph python3-cairosvg parallel fish
+
+###############################################################################
+
+# Requisite python packages
+RUN pip3 install xlrd ipyvolume jupyterlab statsmodels && \
+    pip3 install pycircstat nose autograd seaborn jgraph trimesh
+
+###############################################################################
+
+# Meshparty and related Princeton packages
+RUN pip3 install pyvista==0.20.1 pykdtree tables scikit-build
+RUN pip3 install meshparty
+RUN pip3 install analysisdatalink cloud-volume
+RUN apt-get -y install libassimp-dev
+
+###############################################################################
+
+RUN pip3 install datajoint==0.12.3
+
+###############################################################################
+
+# stop running commands as root (supposedly)
+USER 1001
+
+WORKDIR /data
+COPY --from=builder /data .
+
+WORKDIR /src
+
+COPY --from=builder /src .
+RUN pip3 install -e /src/minnie65p3/python
+
+# Allen institute packages
+# RUN git clone -b phase3 --single-branch https://github.com/AllenInstitute/em_coregistration.git
+RUN pip3 install -e /src/em_coregistration
+# RUN git clone -b authclient_fcc --single-branch https://github.com./seung-lab/AnnotationFrameworkClient.git
+# RUN pip3 install /src/AnnotationFrameworkClient
+# RUN mkdir -p /root/.cloudvolume/secrets
+
+WORKDIR /notebooks
+COPY --from=builder /src/minnie65p3/notebooks/ .
