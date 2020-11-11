@@ -54,10 +54,8 @@ c.JupyterHub.ssl_cert = os.environ['SSL_CERT']
 
 # Added port management (attempt to fix)
 c.JupyterHub.ip = '0.0.0.0' # listen on all IPs
-c.ConfigurableHTTPProxy.command = ['configurable-http-proxy', '--redirect-port', '80'] # this doesn't seem to work or anything for redirecting port 80 to 443
-# c.JupyterHub.ip = '*'
-# c.NotebookApp.allow_origin = '*' #allow all origins
-# c.NotebookApp.allow_remote_access = True
+# c.ConfigurableHTTPProxy.command = ['configurable-http-proxy', '--redirect-port', '80'] # this doesn't seem to work or anything for redirecting port 80 to 443
+# c.ConfigurableHTTPProxy.api_url = 'http://0.0.0.0:5432'
 
 # Authenticate users with GitHub OAuth
 c.JupyterHub.authenticator_class = 'oauthenticator.GitHubOAuthenticator'
