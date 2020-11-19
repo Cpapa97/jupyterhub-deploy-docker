@@ -55,7 +55,6 @@ notebook_image: pull singleuser/Dockerfile
 		--build-arg JUPYTERHUB_VERSION=$(JUPYTERHUB_VERSION) \
 		--build-arg DOCKER_NOTEBOOK_IMAGE=$(DOCKER_NOTEBOOK_IMAGE) \
 		--build-arg MINNIE65P3_PATH=$(MINNIE65P3_PATH) \
-		-v $(MINNIE65P3_PATH):/src/minnie65p3
 		singleuser
 
 build: check-files network volumes
