@@ -1,7 +1,4 @@
 ARG DOCKER_NOTEBOOK_IMAGE
-
-FROM at-docker.ad.bcm.edu:5000/minnie65p3-stelios:latest as intermediate
-
 FROM $DOCKER_NOTEBOOK_IMAGE
 ARG JUPYTERHUB_VERSION
 
@@ -9,7 +6,6 @@ LABEL maintainer="Christos Papadopoulos"
 
 # deal with permission issues temporarily, (supposedly) reset down below
 # USER root
-
 
 ###############################################################################
 
@@ -44,23 +40,16 @@ RUN pip3 install datajoint==0.12.3
 WORKDIR /src
 
 # Allen institute packages
-# RUN git clone -b phase3 --single-branch https://github.com/AllenInstitute/em_coregistration.git
-# RUN pip3 install -e /src/em_coregistration
-
-# minnie65p3
-# ADD . /src/minnie65p3
-# RUN pip3 install -e /src/minnie65p3/python
-
-COPY --from=intermediate /src/em_coregistration .
+RUN git clone -b phase3 --single-branch https://github.com/AllenInstitute/em_coregistration.git
 RUN pip3 install -e /src/em_coregistration
 
-COPY --from=intermediate /src/minnie65p3 .
+# Main package
+COPY ../microns-minnie65-phase3 /src/minnie65p3
 RUN pip3 install -e /src/minnie65p3/python
 
 # stop running commands as root (supposedly)
 # USER 1001
 
 WORKDIR /static-notebooks
-COPY --from=builder /src/minnie65p3/notebooks/ .
-# COPY /notebooks/* ./
+COPY /src/minnie65p3/notebooks/ .
 WORKDIR /content
