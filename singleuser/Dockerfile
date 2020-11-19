@@ -46,7 +46,7 @@ RUN pip3 install -e /src/em_coregistration
 # Main package
 ARG MINNIE65P3_PATH
 COPY $MINNIE65P3_PATH /src/minnie65p3
-RUN pip3 install -e /src/minnie65p3/python
+RUN sudo -H pip3 install -e /src/minnie65p3/python
 
 # stop running commands as root (supposedly)
 USER 1001
