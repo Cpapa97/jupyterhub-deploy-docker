@@ -50,6 +50,8 @@ services:
       # Postgres db info
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: hub-db
+      # Minnie65p3 repo
+      MINNIE65P3_PATH: ${MINNIE65P3_PATH}
     env_file:
       - secrets/postgres.env
       - secrets/oauth.env
