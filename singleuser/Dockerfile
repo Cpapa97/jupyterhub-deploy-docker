@@ -10,14 +10,15 @@ LABEL maintainer="Christos Papadopoulos"
 # deal with permission issues temporarily, (supposedly) reset down below
 USER root
 
-RUN pip3 install jupyterhub==$JUPYTERHUB_VERSION
 
 ###############################################################################
 
 # Install dependency apt packages
 RUN apt-get update && \
     apt-get -y install graphviz libxml2 libxml2-dev zlib1g-dev build-essential python-dev \
-    python-igraph python3-cairosvg parallel fish
+    python-igraph python3-cairosvg parallel fish python3-pip
+
+RUN python3 -m pip install --upgrade pip
 
 ###############################################################################
 
@@ -25,6 +26,11 @@ RUN apt-get update && \
 RUN pip3 install xlrd ipyvolume jupyterlab statsmodels && \
     pip3 install pycircstat nose autograd seaborn jgraph trimesh &&\
     pip3 install importlib --upgrade
+
+###############################################################################
+
+# Jupyterhub
+RUN pip3 install jupyterhub==$JUPYTERHUB_VERSION
 
 ###############################################################################
 
