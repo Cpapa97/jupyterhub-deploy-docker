@@ -44,8 +44,8 @@ RUN git clone -b phase3 --single-branch https://github.com/AllenInstitute/em_cor
 RUN pip3 install -e /src/em_coregistration
 
 # Main package
-ARG MINNIE65P3_PATH
-COPY ${MINNIE65P3_PATH} /src/minnie65p3
+# ARG MINNIE65P3_PATH
+# COPY ${MINNIE65P3_PATH} /src/minnie65p3
 RUN sudo -H pip3 install -e /src/minnie65p3/python
 
 # stop running commands as root (supposedly)
