@@ -52,16 +52,15 @@ WORKDIR /src
 # RUN pip3 install -e /src/minnie65p3/python
 
 COPY --from=intermediate /src/em_coregistration .
-RUN pip3 install -e /src/em_coregistration
+RUN pip3 install -e /em_coregistration
 
 COPY --from=intermediate /src/minnie65p3 .
-RUN pip3 install -e /src/minnie65p3/python
+RUN pip3 install -e /minnie65p3/python
 
 # stop running commands as root (supposedly)
 USER 1001
 
 WORKDIR /static-notebooks
 COPY --from=builder /src/minnie65p3/notebooks/ .
-
 # COPY /notebooks/* ./
-# WORKDIR /content
+WORKDIR /content
