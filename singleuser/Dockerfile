@@ -46,12 +46,13 @@ RUN pip3 install -e /src/em_coregistration
 # Main package
 # ARG MINNIE65P3_PATH
 # COPY ${MINNIE65P3_PATH} /src/minnie65p3
-COPY external/microns-minnie65-phase3 /src/minnie65p3
+ARG initialMinnie65p3Path=external/microns-minnie65-phase3
+COPY ${initialMinnie65p3Path} /src/minnie65p3
 RUN sudo -H pip3 install -e /src/minnie65p3/python
 
 # stop running commands as root (supposedly)
 USER 1001
 
 WORKDIR /static-notebooks
-COPY /src/minnie65p3/notebooks/ .
+COPY ${initialMinnie65p3Path}/notebooks/ .
 WORKDIR /content
