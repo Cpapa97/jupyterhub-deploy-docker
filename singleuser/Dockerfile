@@ -5,7 +5,7 @@ ARG JUPYTERHUB_VERSION
 LABEL maintainer="Christos Papadopoulos"
 
 # deal with permission issues temporarily, (supposedly) reset down below
-# USER root
+USER root
 
 ###############################################################################
 
@@ -48,7 +48,7 @@ COPY ../microns-minnie65-phase3 /src/minnie65p3
 RUN pip3 install -e /src/minnie65p3/python
 
 # stop running commands as root (supposedly)
-# USER 1001
+USER 1001
 
 WORKDIR /static-notebooks
 COPY /src/minnie65p3/notebooks/ .
